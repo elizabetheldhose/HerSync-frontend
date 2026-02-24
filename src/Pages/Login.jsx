@@ -61,6 +61,9 @@ export default function Login() {
           <button className="w-full bg-softRose text-white py-3 rounded-xl hover:bg-roseDark transition" onClick={login}>
             Sign In
           </button>
+          <p className="text-center text-sm text-mutedText mt-4">
+            Don't have an account? <Link to="/register" className="text-softRose hover:underline">Register</Link>
+          </p>
 
         </div>
 
