@@ -64,3 +64,24 @@ Create a `.env` file:
 
 ```env
 VITE_API_URL=https://hersync-backend.onrender.com
+
+
+Installation
+
+npm install
+npm run dev
+
+Deployment
+
+This frontend is deployed using Vercel.
+
+SPA routing fix included via:
+
+{
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/" }
+  ]
+}
+
+
+
