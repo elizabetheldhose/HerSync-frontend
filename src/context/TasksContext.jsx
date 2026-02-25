@@ -1,22 +1,41 @@
-  import { createContext, useContext, useEffect, useState } from "react";
-  import API from "../services/api";
+import { createContext, useContext, useState, useEffect } from "react";
+import API from "../services/api";
 
 const TasksContext = createContext();
 
-export function TasksProvider({ children }) {
+export const TasksProvider = ({ children }) => {
   const [tasks, setTasks] = useState([]);
-  const [loading, setLoading] = useState(true);
 
   const fetchTasks = async () => {
-    try {
-      setLoading(true);
-      const res = await API.get("/tasks");
-      setTasks(res.data);
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setLoading(false);
-    }
+    const res = await API.get("/tasks");
+    setTasks(res.data);
+  };
+
+  const addTask = async (taskData) => {
+    const res = await API.post("/tasks", taskData);
+
+    // 🔥 INSTANT UPDATE
+    setTasks((prev) => [res.data, ...prev]);
+
+    return res.data;
+  };
+
+  const updateTask = async (id, updatedData) => {
+    const res = await API.put(`/tasks/${id}`, updatedData);
+
+    setTasks((prev) =>
+      prev.map((task) =>
+        task._id === id ? res.data : task
+      )
+    );
+  };
+
+  const deleteTask = async (id) => {
+    await API.delete(`/tasks/${id}`);
+
+    setTasks((prev) =>
+      prev.filter((task) => task._id !== id)
+    );
   };
 
   useEffect(() => {
@@ -27,16 +46,15 @@ export function TasksProvider({ children }) {
     <TasksContext.Provider
       value={{
         tasks,
-        setTasks,
-        fetchTasks,
-        loading,
+        addTask,
+        updateTask,
+        deleteTask,
+        fetchTasks
       }}
     >
       {children}
     </TasksContext.Provider>
   );
-}
+};
 
-export function useTasks() {
-  return useContext(TasksContext);
-}
+export const useTasks = () => useContext(TasksContext);

@@ -1,30 +1,36 @@
 import { useEffect, useState } from "react";
 import API from "../services/api";
+import { useTasks } from "../context/TasksContext";
 
 
 export default function CreateTaskModal({
   closeModal,
   refreshTasks,
   editingTask,
+  selectedTask
 }) {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [priority, setPriority] = useState("medium");
   const [dueDate, setDueDate] = useState("");
 
+  const {addTask ,updateTask} = useTasks()
+
   // 🔥 If editing, preload values
+
+  console.log("Selected Task in Modal:", selectedTask);
   useEffect(() => {
-    if (editingTask) {
-      setTitle(editingTask.title || "");
-      setDescription(editingTask.description || "");
-      setPriority(editingTask.priority || "medium");
+    if (selectedTask) {
+      setTitle(selectedTask.title || "");
+      setDescription(selectedTask.description || "");
+      setPriority(selectedTask.priority || "medium");
       setDueDate(
-        editingTask.dueDate
-          ? editingTask.dueDate.split("T")[0]
+        selectedTask.dueDate
+          ? selectedTask.dueDate.split("T")[0]
           : ""
       );
     }
-  }, [editingTask]);
+  }, [selectedTask]);
 
     useEffect(() => {
     const handleEsc = (e) => {
@@ -49,18 +55,22 @@ export default function CreateTaskModal({
         });
       } else {
         // CREATE
-        await API.post("/tasks", {
-          title,
-          description,
-          priority,
-          dueDate,
-        });
+        await addTask({
+        title,
+        dueDate,
+        priority,
+        status: "pending"
+      });
+
       }
 
      
       closeModal();
     } catch (err) {
       console.error(err);
+    }
+    finally {
+      refreshTasks();
     }
   };
 

@@ -84,6 +84,13 @@ export default function TaskTable({taskss = []}) {
                   >
                     {task.status}
                   </span>
+
+                  <button
+                    onClick={() => toggleComplete(task)}
+                    className="text-green-600 hover:underline"
+                  >
+                    ✔
+                  </button>
                 </td>
 
                 <td className="p-3 flex gap-3">

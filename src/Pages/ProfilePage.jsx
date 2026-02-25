@@ -37,7 +37,7 @@ export default function ProfilePage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     await updateProfile(formData);
-    alert("Profile Updated!");
+    // alert("Profile Updated!");
   };
 
   useEffect(() => {

@@ -36,3 +36,11 @@
 .login-card button:hover {
   background: #4338ca;
 }
+.error-box {
+  background: #ffe5e5;
+  color: #d60000;
+  padding: 10px;
+  border-radius: 8px;
+  margin-top: 10px;
+  font-size: 14px;
+}

@@ -3,6 +3,7 @@ import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
 import "./Login.css";
 import BrandLogo from "../components/BrandLogo";  
+import API from "../services/api";
 
 
 export default function Login() {
@@ -10,18 +11,17 @@ export default function Login() {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
 
   const login = async () => {
-    const res = await axios.post("https://hersync-backend.onrender.com/api/auth/login", {
-      email,
-      password
-    });
-
-    localStorage.setItem("token", res.data.token);
-    localStorage.setItem("role", res.data.role);
-
-    navigate("/dashboard");
-  };
+    try {
+      const response = await API.post("/auth/login", { email, password });
+      localStorage.setItem("token", response.data.token);
+      navigate("/profile");
+    } catch (error) {
+      setError(error.response?.data?.message || error.message);
+    }
+  }
 
   return (
 <div className="min-h-screen bg-blush flex items-center justify-center p-6">
@@ -53,9 +53,14 @@ export default function Login() {
             <input
               type="password"
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={(e) => {setPassword(e.target.value); setError("");}}
               className="w-full p-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-softRose transition"
             />
+            {error && (
+  <div className="error-box">
+    {error}
+  </div>
+)}
           </div>
 
           <button className="w-full bg-softRose text-white py-3 rounded-xl hover:bg-roseDark transition" onClick={login}>

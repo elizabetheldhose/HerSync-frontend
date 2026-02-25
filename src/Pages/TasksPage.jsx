@@ -5,11 +5,13 @@ import { DayPicker } from "react-day-picker";
 import "react-day-picker/dist/style.css";
 
 export default function TasksPage() {
-  const { tasks = [] } = useTasks();
+  const { tasks = [] , updateTask ,deleteTask} = useTasks();
 
   const [view, setView] = useState("table");
   const [selectedDate, setSelectedDate] = useState(null);
   const [showModal, setShowModal] = useState(false);
+  const [selectedTask, setSelectedTask] = useState(null);
+
 
   const [fromDate, setFromDate] = useState("");
   const [toDate, setToDate] = useState("");
@@ -34,6 +36,16 @@ export default function TasksPage() {
       return true;
     });
   }, [tasks, fromDate, toDate]);
+
+  const toggleTaskStatus = async (task) => {
+  const newStatus =
+    task.status === "completed" ? "pending" : "completed";
+
+  await updateTask(task._id, {
+    ...task,
+    status: newStatus,
+  });
+};
 
   // ===== Quick Filters =====
   const today = formatLocalDate(new Date());
@@ -103,6 +115,14 @@ export default function TasksPage() {
         )
       : 0;
 
+
+      const handleDelete = async (task) => {
+     
+          await deleteTask(task._id);
+        
+      }
+
+      console.log("Filtered Tasks:", selectedTask);
   return (
     <div className="space-y-8">
 
@@ -251,31 +271,80 @@ export default function TasksPage() {
             <ul className="space-y-4">
               {filteredTasks.map((task) => (
                 <li
-                  key={task._id}
-                  className="flex justify-between items-center border p-4 rounded-xl hover:bg-gray-50 transition"
-                >
-                  <div>
-                    <p className="font-medium">{task.title}</p>
-                    <p className="text-sm text-gray-500">
-                      Due: {formatLocalDate(task.dueDate)}
-                    </p>
-                  </div>
+        key={task._id}
+        className="flex justify-between items-center border p-4 rounded-xl hover:bg-gray-50 transition"
+      >
+        <div className="flex items-center gap-4">
 
-                  <span
-                    className={`px-3 py-1 text-xs rounded-full ${
-                      task.status === "completed"
-                        ? "bg-emerald-100 text-emerald-600"
-                        : "bg-indigo-100 text-indigo-600"
-                    }`}
-                  >
-                    {task.status}
-                  </span>
-                </li>
-              ))}
-            </ul>
-          )}
+          {/* Toggle Button */}
+
+          <button
+          onClick={() => {
+            setSelectedTask(task);
+            setShowModal(true);
+          }}
+          className="text-indigo-500 hover:text-indigo-700 text-sm"
+        >
+          ✏️
+
+        </button>
+
+          <button
+          onClick={() => {
+            setSelectedTask(task);
+            handleDelete(task);
+          }}
+          className="text-indigo-500 hover:text-indigo-700 text-sm"
+        >
+          🗑️
+
+        </button>
+          <button
+            onClick={() => toggleTaskStatus(task)}
+            className={`w-5 h-5 rounded-full border-2 flex items-center justify-center transition ${
+              task.status === "completed"
+                ? "bg-emerald-500 border-emerald-500"
+                : "border-gray-400"
+            }`}
+          >
+            {task.status === "completed" && (
+              <span className="text-white text-xs">✓</span>
+            )}
+          </button>
+
+          {/* Task Info */}
+          <div>
+            <p
+              className={`font-medium ${
+                task.status === "completed"
+                  ? "line-through text-gray-400"
+                  : ""
+              }`}
+            >
+              {task.title}
+            </p>
+            <p className="text-sm text-gray-500">
+              Due: {formatLocalDate(task.dueDate)}
+            </p>
+          </div>
+
         </div>
-      )}
+
+        <span
+          className={`px-3 py-1 text-xs rounded-full ${
+            task.status === "completed"
+              ? "bg-emerald-100 text-emerald-600"
+              : "bg-indigo-100 text-indigo-600"
+          }`}
+        >
+          {task.status}
+        </span>
+      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+            )}
 
       {/* ================= CALENDAR VIEW ================= */}
       {view === "calendar" && (
@@ -313,12 +382,50 @@ export default function TasksPage() {
             {selectedDateTasks.length > 0 && (
               <ul className="space-y-3">
                 {selectedDateTasks.map((task) => (
+
+                  <div className="flex items-center gap-4 border p-3 rounded-lg">
+
+                      <button
+          onClick={() => {
+            setSelectedTask(task);
+            setShowModal(true);
+          }}
+          className="text-indigo-500 hover:text-indigo-700 text-sm"
+        >
+          ✏️
+
+        </button>
+
+          <button
+          onClick={() => {
+            setSelectedTask(task);
+            handleDelete(task);
+          }}
+          className="text-indigo-500 hover:text-indigo-700 text-sm "
+        >
+          🗑️
+
+        </button>
+          <button
+            onClick={() => toggleTaskStatus(task)}
+            className={`w-5 h-5 rounded-full border-2 flex items-center justify-center transition ${
+              task.status === "completed"
+                ? "bg-emerald-500 border-emerald-500"
+                : "border-gray-400"
+            }`}
+          >
+            {task.status === "completed" && (
+              <span className="text-white text-xs">✓</span>
+            )}
+          </button>
                   <li
                     key={task._id}
-                    className="border p-3 rounded-lg"
+                    
                   >
                     {task.title}
                   </li>
+                  </div>
+                 
                 ))}
               </ul>
             )}
@@ -332,6 +439,8 @@ export default function TasksPage() {
         <CreateTaskModal
           closeModal={() => setShowModal(false)}
           defaultDate={selectedDate}
+          selectedTask={selectedTask}
+
         />
       )}
 
