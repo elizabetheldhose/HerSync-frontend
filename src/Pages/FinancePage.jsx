@@ -107,31 +107,31 @@ const monthlyExpense = monthlyTransactions
 const monthlyBalance = monthlyIncome - monthlyExpense;
 
  return (
-  <div className="space-y-8">
+ <div className="space-y-6 md:space-y-8 overflow-x-hidden">
 
     {/* Header */}
     <div>
-      <h1 className="text-3xl font-bold text-slate-800">
+     <h1 className="text-2xl md:text-3xl font-bold text-slate-800">
         Personal Finance
       </h1>
-      <p className="text-slate-500 mt-1">
+    <p className="text-sm md:text-base text-slate-500 mt-1">
         Track income, expenses and manage your monthly balance
       </p>
     </div>
 
     {/* Monthly Summary Cards */}
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
 
-      <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
-        <p className="text-sm text-slate-500">Monthly Income</p>
-        <p className="text-3xl font-bold text-emerald-600 mt-2">
+      <div className="bg-white p-4 md:p-6 rounded-2xl shadow-sm border">
+        <p className="text-2xl  text-slate-500">Monthly Income</p>
+        <p className="md:text-3xl font-bold text-emerald-600 mt-2">
           ₹{monthlyIncome}
         </p>
       </div>
 
-      <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
-        <p className="text-sm text-slate-500">Monthly Expense</p>
-        <p className="text-3xl font-bold text-rose-600 mt-2">
+      <div className="bg-white p-4 md:p-6 rounded-2xl shadow-sm border">
+        <p className="text-2xl text-slate-500">Monthly Expense</p>
+        <p className="md:text-3xl font-bold text-rose-600 mt-2">
           ₹{monthlyExpense}
         </p>
       </div>
@@ -146,15 +146,15 @@ const monthlyBalance = monthlyIncome - monthlyExpense;
     </div>
 
     {/* Charts Section */}
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-      <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
+   <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6">
+      <div className="bg-white p-4 md:p-6 rounded-2xl shadow-sm border border-slate-100">
         <Pichart
           monthlyIncome={monthlyIncome}
           monthlyExpense={monthlyExpense}
         />
       </div>
 
-      <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
+      <div className="bg-white p-4 md:p-6 rounded-2xl shadow-sm border border-slate-100">
         <Monthlytrendline
           monthlyTransactions={monthlyTransactions}
           currentMonth={currentMonth}
@@ -167,14 +167,13 @@ const monthlyBalance = monthlyIncome - monthlyExpense;
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
 
       {/* Calendar Card */}
-      <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
-        <Calendar
-          onChange={setSelectedDate}
-          value={selectedDate}
-          tileContent={tileContent}
-        />
-      </div>
-
+     <div className="overflow-x-auto">
+  <Calendar
+    onChange={setSelectedDate}
+    value={selectedDate}
+    tileContent={tileContent}
+  />
+</div>
       {/* Right Panel */}
       <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 space-y-6">
 
@@ -188,24 +187,24 @@ const monthlyBalance = monthlyIncome - monthlyExpense;
         </h3>
 
         {/* Daily Summary */}
-        <div className="grid grid-cols-3 gap-4 bg-slate-50 p-4 rounded-xl">
+        <div className="grid grid-cols-3 gap-2 md:gap-4 text-center">
 
           <div>
-            <p className="text-xs text-slate-500">Income</p>
+            <p className="text-base md:text-lg">Income</p>
             <p className="text-lg font-semibold text-emerald-600">
               ₹{dailyIncome}
             </p>
           </div>
 
           <div>
-            <p className="text-xs text-slate-500">Expense</p>
+            <p className="text-base md:text-lg text-slate-500">Expense</p>
             <p className="text-lg font-semibold text-rose-600">
               ₹{dailyExpense}
             </p>
           </div>
 
           <div>
-            <p className="text-xs text-slate-500">Balance</p>
+            <p className="text-base md:text-lg">Balance</p>
             <p className="text-lg font-semibold text-slate-800">
               ₹{dailyBalance}
             </p>
@@ -219,7 +218,7 @@ const monthlyBalance = monthlyIncome - monthlyExpense;
           className="space-y-3 bg-slate-50 p-4 rounded-xl"
         >
 
-          <div className="flex gap-3">
+          <div className="flex flex-col sm:flex-row gap-3 ">
             <select
               value={type}
               onChange={(e) => setType(e.target.value)}
@@ -276,11 +275,12 @@ const monthlyBalance = monthlyIncome - monthlyExpense;
           {dailyTransactions.map((t) => (
             <div
               key={t._id}
-              className="flex justify-between items-center bg-white border border-slate-100 hover:shadow-sm transition p-3 rounded-xl"
+              className="flex flex-col sm:flex-row sm:items-center sm:justify-between 
+           gap-2 bg-white border hover:shadow-sm transition p-3 rounded-xl"
             >
               <div>
                 <p
-                  className={`font-semibold ${
+                  className={`text-sm text-slate-500 break-words ${
                     t.type === "income"
                       ? "text-emerald-600"
                       : "text-rose-600"

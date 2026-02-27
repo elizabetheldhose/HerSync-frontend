@@ -150,31 +150,35 @@ export default function HealthPage() {
   =============================== */
 
   return (
-    <div className="space-y-8 bg-rose-50 p-6 rounded-3xl">
+    <div className="space-y-6 md:space-y-8 
+                bg-rose-50 
+                p-4 md:p-6 
+                rounded-2xl md:rounded-3xl 
+                overflow-x-hidden">
 
       {/* HEADER */}
       <div>
-        <h1 className="text-3xl font-bold text-rose-600">
+        <h1 className="text-2xl md:text-3xl font-bold text-rose-600">
           Flow & Wellness
         </h1>
-        <p className="text-rose-400 mt-1">
+        <p className="text-sm md:text-base text-rose-400 mt-1">
           Track your cycle and daily wellbeing
         </p>
       </div>
 
       {/* SUMMARY CARDS */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
 
-        <div className="bg-white p-6 rounded-3xl shadow-sm border border-rose-100">
-          <p className="text-sm text-rose-400">
+        <div className="bg-white p-4 md:p-6 rounded-2xl md:rounded-3xl shadow-sm border border-rose-100">
+          <p className="text-2xl md:text-3xl text-rose-400">
             Average Sleep
           </p>
-          <p className="text-3xl font-bold text-rose-600 mt-2">
+          <p className="text-2xl md:text-3xl font-bold text-rose-600 mt-2">
             {avgSleep} hrs
           </p>
         </div>
 
-        <div className="bg-white p-6 rounded-3xl shadow-sm border border-rose-100">
+        <div className="bg-white p-4 md:p-6 rounded-2xl md:rounded-3xl shadow-sm border border-rose-100">
           <p className="text-sm text-rose-400">
             Last Period
           </p>
@@ -185,7 +189,7 @@ export default function HealthPage() {
           </p>
         </div>
 
-        <div className="bg-white p-6 rounded-3xl shadow-sm border border-rose-100">
+        <div className="bg-white p-4 md:p-6 rounded-2xl md:rounded-3xl shadow-sm border border-rose-100">
           <p className="text-sm text-rose-400">
             Predicted Next
           </p>
@@ -202,9 +206,9 @@ export default function HealthPage() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
 
         {/* CALENDAR */}
-        <div className="bg-white p-6 rounded-3xl shadow-sm border border-rose-100">
-
-          <DayPicker
+        <div className="bg-white p-6 rounded-3xl shadow-sm border border-rose-100 ">
+<div className="overflow-x-auto">
+ <DayPicker
             mode="single"
             selected={selectedDate}
             onSelect={setSelectedDate}
@@ -225,8 +229,10 @@ export default function HealthPage() {
                  selected: "bg-indigo-600 text-white rounded-full shadow-md",
             }}
           />
+</div>
+         
 
-          <div className="flex gap-6 text-sm mt-4 text-slate-500">
+         <div className="flex flex-wrap gap-4 text-xs md:text-sm mt-4 text-slate-500">
   <div className="flex items-center gap-2">
     <span className="h-3 w-3 bg-rose-500 rounded-full"></span>
     Period
@@ -255,14 +261,19 @@ export default function HealthPage() {
               Cycle Phase: {getCyclePhase(selectedDate, lastPeriod)}
             </h3>
 
-          <h3 className="text-lg font-semibold text-rose-600">
-            {selectedDate.toLocaleDateString("en-US", {
-              weekday: "long",
-              year: "numeric",
-              month: "long",
-              day: "numeric",
-            })}
-          </h3>
+         <h3 className="text-base md:text-lg font-semibold text-rose-600">
+  <span className="md:hidden">
+    {selectedDate.toLocaleDateString()}
+  </span>
+  <span className="hidden md:block">
+    {selectedDate.toLocaleDateString("en-US", {
+      weekday: "long",
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    })}
+  </span>
+</h3>
 
           <form onSubmit={handleSubmit} className="space-y-3">
 

@@ -124,47 +124,47 @@ export default function TasksPage() {
 
       console.log("Filtered Tasks:", selectedTask);
   return (
-    <div className="space-y-8">
+    <div className="space-y-6 md:space-y-8">
 
       {/* Header */}
-      <div className="flex justify-between items-center">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <h1 className="text-3xl font-bold text-slate-800">
           Productivity Hub
         </h1>
 
         <button
           onClick={() => setShowModal(true)}
-          className="bg-indigo-600 text-white px-6 py-3 rounded-xl hover:bg-indigo-500 transition shadow"
+          className="w-full sm:w-auto bg-indigo-600 text-white px-6 py-3 rounded-xl hover:bg-indigo-500 transition shadow"
         >
           + Add Task
         </button>
       </div>
       {/* ===== Summary Strip ===== */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
 
-        <div className="bg-white p-6 rounded-2xl shadow border border-indigo-100">
-          <p className="text-sm text-gray-500">Total Tasks</p>
+        <div className="bg-white p-4 md:p-6 rounded-2xl shadow border">
+          <p className="text-2xl md:text-3xl text-gray-500">Total Tasks</p>
           <p className="text-3xl font-bold text-indigo-600 mt-2">
             {totalTasks}
           </p>
         </div>
 
-        <div className="bg-white p-6 rounded-2xl shadow border border-emerald-100">
-          <p className="text-sm text-gray-500">Completed Today</p>
+        <div className="bg-white p-4 md:p-6 rounded-2xl shadow borde">
+          <p className="text-2xl md:text-3xl text-gray-500">Completed Today</p>
           <p className="text-3xl font-bold text-emerald-600 mt-2">
             {completedToday}
           </p>
         </div>
 
-        <div className="bg-white p-6 rounded-2xl shadow border border-rose-100">
-          <p className="text-sm text-gray-500">Overdue</p>
+        <div className="bg-white p-4 md:p-6 rounded-2xl shadow borde">
+          <p className="text-2xl md:text-3xl text-gray-500">Overdue</p>
           <p className="text-3xl font-bold text-rose-500 mt-2">
             {overdue}
           </p>
         </div>
 
-        <div className="bg-white p-6 rounded-2xl shadow border border-purple-100">
-          <p className="text-sm text-gray-500">Completion Rate</p>
+        <div className="bg-white p-4 md:p-6 rounded-2xl shadow borde">
+          <p className="text-2xl md:text-3xl text-gray-500">Completion Rate</p>
           <p className="text-3xl font-bold text-purple-600 mt-2">
             {completionRate}%
           </p>
@@ -172,12 +172,12 @@ export default function TasksPage() {
 
       </div>
       {/* ================= FILTER SECTION ================= */}
-      <div className="bg-white p-6 rounded-2xl shadow border border-indigo-100 space-y-4">
+      <div className="bg-white p-4 md:p-6 rounded-2xl shadow border space-y-4">
 
-        <div className="flex flex-wrap items-end gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
 
           <div>
-            <label className="text-sm text-gray-500 block mb-1">
+            <label className="w-full border rounded-xl px-4 py-2 focus:ring-2 focus:ring-indigo-200">
               From
             </label>
             <input
@@ -189,7 +189,7 @@ export default function TasksPage() {
           </div>
 
           <div>
-            <label className="text-sm text-gray-500 block mb-1">
+            <label className="w-full border rounded-xl px-4 py-2 focus:ring-2 focus:ring-indigo-200">
               To
             </label>
             <input
@@ -202,7 +202,7 @@ export default function TasksPage() {
 
           <button
             onClick={resetFilters}
-            className="bg-gray-200 px-4 py-2 rounded-xl hover:bg-gray-300 transition"
+            className="w-full sm:w-auto bg-gray-200 px-4 py-2 rounded-xl"
           >
             Reset
           </button>
@@ -236,7 +236,7 @@ export default function TasksPage() {
       </div>
 
       {/* ================= VIEW TOGGLE ================= */}
-      <div className="flex gap-4">
+      <div className="flex gap-4flex flex-col sm:flex-row gap-3">
         <button
           onClick={() => setView("table")}
           className={`px-4 py-2 rounded-xl ${
@@ -250,7 +250,7 @@ export default function TasksPage() {
 
         <button
           onClick={() => setView("calendar")}
-          className={`px-4 py-2 rounded-xl ${
+          className={`w-full sm:w-auto px-4 py-2 rounded-xl ${
             view === "calendar"
               ? "bg-indigo-100 text-indigo-600"
               : "bg-white border"
@@ -272,9 +272,10 @@ export default function TasksPage() {
               {filteredTasks.map((task) => (
                 <li
         key={task._id}
-        className="flex justify-between items-center border p-4 rounded-xl hover:bg-gray-50 transition"
+        className="flex flex-col sm:flex-row sm:items-center sm:justify-between 
+           gap-3 border p-4 rounded-xl hover:bg-gray-50 transition"
       >
-        <div className="flex items-center gap-4">
+        <div className="flex flex-wrap items-center gap-3">
 
           {/* Toggle Button */}
 
@@ -348,7 +349,7 @@ export default function TasksPage() {
 
       {/* ================= CALENDAR VIEW ================= */}
       {view === "calendar" && (
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8 space-y-6 md:space-y-8 overflow-x-hidden">
 
           <div className="bg-white p-6 rounded-2xl shadow border border-indigo-100">
             <DayPicker

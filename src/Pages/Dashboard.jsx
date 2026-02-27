@@ -93,114 +93,127 @@ export default function Dashboard() {
      RENDER
   =============================== */
 
-  return (
-    <div className="space-y-10">
+ return (
+  <div className="space-y-6 md:space-y-10 px-4 md:px-8 max-w-7xl mx-auto">
 
-      {/* Greeting */}
-      <div>
-        <h1 className="text-3xl font-light text-warmText">
-          Welcome back 🌸
-        </h1>
-        <p className="text-mutedText mt-2">
-          Here’s your life overview today.
-        </p>
-      </div>
+    {/* Greeting */}
+    <div>
+      <h1 className="text-2xl md:text-3xl font-light text-warmText">
+        Welcome back 🌸
+      </h1>
+      <p className="text-sm md:text-base text-mutedText mt-2">
+        Here’s your life overview today.
+      </p>
+    </div>
 
-      {/* Life Score Panel */}
+    {/* Life Score Panel */}
+    <motion.div
+      whileHover={{ scale: 1.02 }}
+      className="bg-gradient-to-r from-white to-rose-50 
+                 p-5 md:p-8 
+                 rounded-2xl md:rounded-3xl 
+                 shadow-[0_8px_30px_rgb(0,0,0,0.04)] 
+                 border border-white/40"
+    >
+      <p className="text-softRose text-xs md:text-sm mb-2">
+        ✨ Your Life Balance Score
+      </p>
+      <h2 className="text-3xl md:text-5xl font-light text-lavenderDark">
+        {lifeScore} / 100
+      </h2>
+      <p className="text-sm md:text-base text-mutedText mt-3">
+        Based on productivity, sleep, and balance.
+      </p>
+    </motion.div>
+
+    {/* Overview Cards */}
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-5 md:gap-8">
+
+      {/* Productivity */}
       <motion.div
-        whileHover={{ scale: 1.02 }}
-        className="bg-gradient-to-r from-white to-rose-50 p-8 rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-white/40"
+        whileHover={{ scale: 1.03 }}
+        className="bg-white/80 backdrop-blur-md 
+                   rounded-2xl md:rounded-3xl 
+                   p-5 md:p-8 
+                   shadow-sm border border-white/40"
       >
-        <p className="text-softRose text-sm mb-2">
-          ✨ Your Life Balance Score
+        <p className="text-mutedText text-xs md:text-sm">
+          Productivity
         </p>
-        <h2 className="text-5xl font-light text-lavenderDark">
-          {lifeScore} / 100
+        <h2 className="text-2xl md:text-4xl font-light mt-3 text-softRose">
+          {totalTasks}
         </h2>
-        <p className="text-mutedText mt-3">
-          Based on productivity, sleep, and balance.
+        <p className="text-xs md:text-sm mt-2 text-mutedText">
+          {completedToday} completed today
+        </p>
+        <p className="text-xs md:text-sm text-red-400">
+          {overdue} overdue
         </p>
       </motion.div>
 
-      {/* Overview Cards */}
-      <div className="grid md:grid-cols-3 gap-8">
-
-        {/* Productivity */}
-        <motion.div
-          whileHover={{ scale: 1.03 }}
-          className="bg-white/80 backdrop-blur-md rounded-3xl p-8 shadow-sm border border-white/40"
-        >
-          <p className="text-mutedText text-sm">
-            Productivity
-          </p>
-          <h2 className="text-4xl font-light mt-3 text-softRose">
-            {totalTasks}
-          </h2>
-          <p className="text-sm mt-2 text-mutedText">
-            {completedToday} completed today
-          </p>
-          <p className="text-sm text-red-400">
-            {overdue} overdue
-          </p>
-        </motion.div>
-
-        {/* Finance */}
-        <motion.div
-          whileHover={{ scale: 1.03 }}
-          className="bg-white/80 backdrop-blur-md rounded-3xl p-8 shadow-sm border border-white/40"
-        >
-          <p className="text-mutedText text-sm">
-            Monthly Balance
-          </p>
-          <h2 className="text-4xl font-light mt-3 text-lavenderDark">
-            ₹{balance}
-          </h2>
-          <p className="text-green-500 text-sm mt-2">
-            Income ₹{monthlyIncome}
-          </p>
-          <p className="text-red-400 text-sm">
-            Expense ₹{monthlyExpense}
-          </p>
-        </motion.div>
-
-        {/* Wellness */}
-        <motion.div
-          whileHover={{ scale: 1.03 }}
-          className="bg-white/80 backdrop-blur-md rounded-3xl p-8 shadow-sm border border-white/40"
-        >
-          <p className="text-mutedText text-sm">
-            Wellness
-          </p>
-          <h2 className="text-4xl font-light mt-3 text-softRose">
-            {avgSleep} hrs
-          </h2>
-          <p className="text-sm mt-2 text-mutedText">
-            Avg sleep
-          </p>
-          <p className="text-sm text-pink-400">
-            Last period:{" "}
-            {lastPeriod
-              ? new Date(
-                  lastPeriod.date
-                ).toLocaleDateString()
-              : "N/A"}
-          </p>
-        </motion.div>
-
-      </div>
-
-      {/* AI Insight Section */}
-      <div className="bg-white/80 backdrop-blur-md p-8 rounded-3xl shadow-sm border border-white/40">
-        <p className="text-softRose text-sm mb-3">
-          🤖 AI Insight
+      {/* Finance */}
+      <motion.div
+        whileHover={{ scale: 1.03 }}
+        className="bg-white/80 backdrop-blur-md 
+                   rounded-2xl md:rounded-3xl 
+                   p-5 md:p-8 
+                   shadow-sm border border-white/40"
+      >
+        <p className="text-mutedText text-xs md:text-sm">
+          Monthly Balance
         </p>
-        <p className="text-mutedText leading-relaxed">
-          Your productivity is improving this week.
-          Consider maintaining consistent sleep to
-          enhance focus and energy levels.
+        <h2 className="text-2xl md:text-4xl font-light mt-3 text-lavenderDark break-words">
+          ₹{balance}
+        </h2>
+        <p className="text-green-500 text-xs md:text-sm mt-2">
+          Income ₹{monthlyIncome}
         </p>
-      </div>
+        <p className="text-red-400 text-xs md:text-sm">
+          Expense ₹{monthlyExpense}
+        </p>
+      </motion.div>
 
+      {/* Wellness */}
+      <motion.div
+        whileHover={{ scale: 1.03 }}
+        className="bg-white/80 backdrop-blur-md 
+                   rounded-2xl md:rounded-3xl 
+                   p-5 md:p-8 
+                   shadow-sm border border-white/40"
+      >
+        <p className="text-mutedText text-xs md:text-sm">
+          Wellness
+        </p>
+        <h2 className="text-2xl md:text-4xl font-light mt-3 text-softRose">
+          {avgSleep} hrs
+        </h2>
+        <p className="text-xs md:text-sm mt-2 text-mutedText">
+          Avg sleep
+        </p>
+        <p className="text-xs md:text-sm text-pink-400 break-words">
+          Last period:{" "}
+          {lastPeriod
+            ? new Date(lastPeriod.date).toLocaleDateString()
+            : "N/A"}
+        </p>
+      </motion.div>
     </div>
-  );
+
+    {/* AI Insight */}
+    <div className="bg-white/80 backdrop-blur-md 
+                    p-5 md:p-8 
+                    rounded-2xl md:rounded-3xl 
+                    shadow-sm border border-white/40">
+      <p className="text-softRose text-xs md:text-sm mb-3">
+        🤖 AI Insight
+      </p>
+      <p className="text-sm md:text-base text-mutedText leading-relaxed">
+        Your productivity is improving this week.
+        Consider maintaining consistent sleep to
+        enhance focus and energy levels.
+      </p>
+    </div>
+
+  </div>
+);
 }
