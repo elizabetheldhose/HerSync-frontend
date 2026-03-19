@@ -1,10 +1,18 @@
 import { Navigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 
-export default function ProtectedRoute({ children }) {
-  const token = localStorage.getItem("token");
+// ✅ FIX: Uses AuthContext instead of reading localStorage directly.
+// This properly integrates with the RBAC role system.
+export default function ProtectedRoute({ children, requiredRole }) {
+  const { isAuthenticated, role } = useAuth();
 
-  if (!token) {
-    return <Navigate to="/" />;
+  if (!isAuthenticated) {
+    return <Navigate to="/" replace />;
+  }
+
+  // RBAC: if a specific role is required, check it
+  if (requiredRole && role !== requiredRole) {
+    return <Navigate to="/dashboard" replace />;
   }
 
   return children;
