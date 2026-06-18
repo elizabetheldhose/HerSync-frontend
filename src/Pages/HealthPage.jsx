@@ -3,6 +3,7 @@ import { DayPicker } from "react-day-picker";
 import "react-day-picker/dist/style.css";
 import { useHealth } from "../context/HealthContext";
 import HealthChat from "../components/HealthChat";
+import API from "../services/api";
 
 export default function HealthPage() {
   const { entries, saveEntry } = useHealth();
@@ -17,6 +18,10 @@ export default function HealthPage() {
 
   const [aiInsight, setAiInsight] = useState(null);
   const [showChat, setShowChat] = useState(false);
+
+  const [insightLoading, setInsightLoading] = useState(false);
+  const [insightText, setInsightText] = useState(null);
+  const [insightError, setInsightError] = useState(null);
 
   const formatDate = (date) =>
     new Date(date).toISOString().split("T")[0];
@@ -132,6 +137,21 @@ export default function HealthPage() {
     setPeriod(false);
   };
 
+
+  const handleGetInsight = async () => {
+    setInsightLoading(true);
+    setInsightError(null);
+    setInsightText(null);
+    try {
+      const recent = entries.slice(-10);
+      const res = await API.post("/ai/health-insight", { entries: recent });
+      setInsightText(res.data.insight ?? res.data.aiInsight ?? "No insight returned.");
+    } catch {
+      setInsightError("Unable to get AI insight. Please try again later.");
+    } finally {
+      setInsightLoading(false);
+    }
+  };
 
   const getCyclePhase = (selectedDate, lastPeriod) => {
   if (!lastPeriod) return "Unknown";
@@ -336,6 +356,51 @@ export default function HealthPage() {
 
         </div>
 
+      </div>
+
+      {/* AI INSIGHTS */}
+      <div className="bg-white p-6 rounded-3xl shadow-sm border border-rose-100">
+        <div className="flex items-center justify-between mb-4">
+          <div>
+            <h3 className="text-lg font-semibold text-rose-600">AI Wellness Insight</h3>
+            <p className="text-xs text-rose-300 mt-0.5">Based on your last 10 logged entries</p>
+          </div>
+          <button
+            type="button"
+            onClick={handleGetInsight}
+            disabled={insightLoading || entries.length === 0}
+            className="flex items-center gap-2 bg-rose-500 text-white px-4 py-2 rounded-xl
+                       text-sm hover:bg-rose-400 transition disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            {insightLoading ? (
+              <>
+                <span className="w-4 h-4 rounded-full border-2 border-white border-t-transparent animate-spin" />
+                Thinking…
+              </>
+            ) : "Get AI Insight"}
+          </button>
+        </div>
+
+        {insightError && (
+          <div className="bg-rose-50 border border-rose-200 text-rose-600 rounded-xl p-4 text-sm">
+            {insightError}
+          </div>
+        )}
+
+        {insightText && (
+          <div className="bg-rose-50 border border-rose-100 rounded-2xl p-4 text-sm
+                          text-rose-800 leading-relaxed whitespace-pre-line">
+            {insightText}
+          </div>
+        )}
+
+        {!insightText && !insightError && !insightLoading && (
+          <p className="text-sm text-rose-300 text-center py-2">
+            {entries.length === 0
+              ? "Log at least one entry to unlock AI insights."
+              : "Click \"Get AI Insight\" for a personalized wellness summary."}
+          </p>
+        )}
       </div>
 
       {/* CHAT */}
